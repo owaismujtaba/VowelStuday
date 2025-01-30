@@ -53,6 +53,6 @@ def eeg_markers_row_setup(row):
 def eeg_markers_setup(markers):
     markers = markers.apply(eeg_markers_row_setup, axis=1)
     markers['Vowel'] = markers['Vowel'].where(markers['Vowel'] != '', other=None)
-    markers['Vowel'] = markers['Vowel'].fillna(method='bfill')
+    markers['Vowel'] = markers['Vowel'].bfill()
 
     return markers
