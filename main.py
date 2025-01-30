@@ -1,6 +1,7 @@
 
 
 from src.dataset.data_reader import XDFDataReader
+from src.dataset.bids import BIDSDataset
 import pdb
 
 filepaths  = [
@@ -25,4 +26,5 @@ for filepath in filepaths:
         sub_id=sub,
         ses_id=ses
     )
+    bids = BIDSDataset(xdf_reader=xdf_reader)
     pdb.set_trace()

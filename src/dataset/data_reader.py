@@ -31,9 +31,13 @@ class XDFDataReader:
 
     def read_xdf_file(self):
         styled_print("📂", "Reading XDF File...", "magenta")
-        self._load_eeg_stream()
         try:
-            self._load_audio_stream()
+            self._load_eeg_stream()
+        except:
+            styled_print("⚠️", "Error reading EEG from XDF", "red", bold=False, panel=True)
+        try:
+            #self._load_audio_stream()
+            pass
         except:
             styled_print("⚠️", "Error reading Audio from XDF", "red", bold=False, panel=True)
 
