@@ -24,7 +24,7 @@ class BIDSDataset:
 
         self._ensure_directories()
         self.__eeg_markers_setup()
-        self._save_markers_info()
+        self._save_markers_meta_data()
         self._annotations_eeg_setup()
 
 
@@ -38,14 +38,17 @@ class BIDSDataset:
             duration=[0] * len(onsets), 
             description=descriptions
         )
+        
+        self.eeg.set_annotations = self.annotations
 
 
 
-    def __bids_info_setup(self):
+    def _bids_info_setup(self):
         self.ch_names = self.eeg.ch_names
 
     def preprocess_eeg(self):
         self.eeg = self.eeg.resample(config.EEG_SR)
+        self.eeg.set_eeg_reference(['FCz'])
         self.eeg.notch_filter(config.NOTCH_FREQ, fir_design='firwin')
         self.eeg.filter(
             l_freq=config.LOW_FREQ, h_freq=config.HIGH_FREQ,
@@ -54,7 +57,7 @@ class BIDSDataset:
         
 
     def create_bids_file(self):
-        eeg_data = self.eeg.get_dat()
+        eeg_data = self.eeg.get_data()
 
     def __eeg_markers_setup(self):
         styled_print("🧠", "Extracting EEG Markers...", "blue")
@@ -77,7 +80,7 @@ class BIDSDataset:
         
         styled_print("✅", "EEG Markers Setup Complete!", "green")
 
-    def _save_markers_info(self):
+    def _save_markers_meta_data(self):
         styled_print("💾", "Saving Markers Metadata...", "magenta")
 
         destination = Path(config.CURR_DIR, 'MetaData')
